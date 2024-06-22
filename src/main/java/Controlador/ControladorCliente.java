@@ -31,16 +31,12 @@ public class ControladorCliente extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ClassClienteImp crud = new ClassClienteImp();
+        TblCliente cliente = new TblCliente();
+		ClassClienteImp crud = new ClassClienteImp();
         List<TblCliente> listadocliente = crud.ListadoCliente();
 
-        // Verificar si la lista está cargada
-        System.out.println("Número de clientes obtenidos: " + listadocliente.size());
-        for (TblCliente cliente : listadocliente) {
-            System.out.println("Cliente: " + cliente.getNombre() + " " + cliente.getApellido());
-        }
 
-        request.setAttribute("listadocliente", listadocliente);
+        request.setAttribute("listadoclientes", listadocliente);
         request.getRequestDispatcher("/ListadoClientes.jsp").forward(request, response);
     }
 
@@ -75,6 +71,11 @@ public class ControladorCliente extends HttpServlet {
 				cliente.setNacionalidad(nacionalidad);
 				//invocamos la metodo registrar...
 				crud.RegistrarCliente(cliente);
+				
+				List<TblCliente> listadocliente = crud.ListadoCliente();
+				
+				request.setAttribute("listadodeproductos", listadocliente);
+				
 				//redireccionamos
 				request.getRequestDispatcher("/ListadoClientes.jsp").forward(request, response);
 	}	//Fin del metodo doPost
